@@ -13,3 +13,4 @@ local Tests = TestListView.new()
 if script.Parent.Name == "PlayerGui" then
     script.Parent = Tests.ScreenGui
 end
+Tests.Visible = true

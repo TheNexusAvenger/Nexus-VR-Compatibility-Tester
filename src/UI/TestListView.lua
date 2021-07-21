@@ -5,6 +5,7 @@ Displays a list of tests.
 --]]
 
 local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
 
 local NexusInstance = require(script.Parent.Parent:WaitForChild("NexusInstance"):WaitForChild("NexusInstance"))
 local TestView = require(script.Parent:WaitForChild("TestView"))
@@ -22,6 +23,7 @@ Creates the list view.
 --]]
 function TestListView:__new()
     self:InitializeSuper()
+    self.Visible = false
 
     --Create the frames.
     local ScreenGui = Instance.new("ScreenGui")
@@ -38,7 +40,6 @@ function TestListView:__new()
     ScrollingFrame.Name = "TestsList"
     ScrollingFrame.Size = UDim2.new(0.5,0,1,0)
     ScrollingFrame.Position = UDim2.new(1,0,0,0)
-    ScrollingFrame.AnchorPoint = Vector2.new(1,0)
     ScrollingFrame.SizeConstraint = Enum.SizeConstraint.RelativeYY
     ScrollingFrame.HorizontalScrollBarInset = Enum.ScrollBarInset.ScrollBar
     ScrollingFrame.CanvasSize = UDim2.new(0,0,0,0)
@@ -211,6 +212,23 @@ function TestListView:__new()
             DB = true
         end)
     end
+
+    --Connect showing and hidding.
+    self:GetPropertyChangedSignal("Visible"):Connect(function()
+        if self.Visible then
+            TweenService:Create(ScrollingFrame,TweenInfo.new(0.25),{
+                AnchorPoint = Vector2.new(1,0),
+            }):Play()
+            if self.CurrentInfoTest then
+                self.InfoContainer:TweenPosition(UDim2.new(0.5,0,0.675,0),"InOut","Quad",0.25,true)
+            end
+        else
+            TweenService:Create(ScrollingFrame,TweenInfo.new(0.25),{
+                AnchorPoint = Vector2.new(0,0),
+            }):Play()
+            self.InfoContainer:TweenPosition(UDim2.new(0.5,0,1,0),"InOut","Quad",0.25,true)
+        end
+    end)
 end
 
 function TestListView:ShowTestInfo(Test)
