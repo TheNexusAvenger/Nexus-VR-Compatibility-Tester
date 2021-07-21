@@ -1,0 +1,21 @@
+{
+    "name": "Nexus-VR-Compatibility-Tester",
+    "tree": {
+        "$className": "DataModel",
+        "StarterGui": {
+            "$className": "StarterGui",
+            "NexusVRCompatibilityTester": {
+                "$path": "./src",
+                "NexusInstance": {
+                    "$path": "./module/Nexus-Instance/src"
+                }
+            }
+        },
+        "TestService": {
+            "$className": "TestService",
+            "NexusVRCompatibilityTester": {
+                "$path": "./test"
+            }
+        }
+    }
+}
