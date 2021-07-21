@@ -29,7 +29,7 @@ function TestListView:__new()
     --Create the frames.
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "NexusVRCompatibilityTester"
-    ScreenGui.ResetOnSpawn = true
+    ScreenGui.ResetOnSpawn = false
     ScreenGui.DisplayOrder = 1000
     ScreenGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
     self.ScreenGui = ScreenGui
