@@ -1,29 +1,29 @@
 --[[
 TheNexusAvenger
 
-Test for SurfaceGuis containing ScrollingFrames.
+Test for SurfaceGuis containing unwrapped buttons.
 --]]
 
 local BaseTest = require(script.Parent:WaitForChild("BaseTest"))
 local ProblemHighlights = require(script.Parent:WaitForChild("Common"):WaitForChild("ProblemHighlights"))
 
-local SurfaceGuiScrollingFrameTest = BaseTest:Extend()
-SurfaceGuiScrollingFrameTest:SetClassName("SurfaceGuiScrollingFrameTest")
+local UnwrappedSurfaceGuiButtonsTest = BaseTest:Extend()
+UnwrappedSurfaceGuiButtonsTest:SetClassName("UnwrappedSurfaceGuiButtonsTest")
 
 
 
 --[[
 Creates the test.
 --]]
-function SurfaceGuiScrollingFrameTest:__new()
+function UnwrappedSurfaceGuiButtonsTest:__new()
     self:InitializeSuper()
 
     --Set up the initial state.
-    self.Name = "SurfaceGui ScrollingFrames"
+    self.Name = "Unwrapped SurfaceGui Buttons"
     self.Icon = "NONE"
     self.Status = "Not Detected"
-    self.ProblemText = "ScrollingFrames in SurfaceGuis are difficult to use in VR, and are also problematic for console and mobile users."
-    self.SolutionText = "Not using ScrollingFrames is the recommended approach. Using pages or using auto-scrolling is recommended instead."
+    self.ProblemText = "Buttons in SurfaceGuis can be very difficult to interact with in VR. Sometimes user interfaces become unusable in VR."
+    self.SolutionText = "Wrapping buttons with Nexus VR Core is recommended for button integration."
     self.SurfaceGuiEvents = {}
     self.SurfaceGuiProblems = {}
     self.Highlights = ProblemHighlights.new(self)
@@ -50,7 +50,7 @@ end
 --[[
 Connects a SurfaceGui.
 --]]
-function SurfaceGuiScrollingFrameTest:ConnectSurfaceGui(SurfaceGui)
+function UnwrappedSurfaceGuiButtonsTest:ConnectSurfaceGui(SurfaceGui)
     --Use a pcall to determine the type. game exposes non-usable instances.
     local Worked,Return = pcall(function()
         return SurfaceGui:IsA("SurfaceGui")
@@ -61,35 +61,47 @@ function SurfaceGuiScrollingFrameTest:ConnectSurfaceGui(SurfaceGui)
     self.SurfaceGuiEvents[SurfaceGui] = {}
     self.SurfaceGuiProblems[SurfaceGui] = {}
     table.insert(self.SurfaceGuiEvents[SurfaceGui],SurfaceGui.DescendantAdded:Connect(function(Ins)
-        if not Ins:IsA("ScrollingFrame") then return end
+        if not Ins:IsA("GuiButton") then return end
         self.SurfaceGuiProblems[SurfaceGui][Ins] = true
         self:UpdateState()
     end))
     table.insert(self.SurfaceGuiEvents[SurfaceGui],SurfaceGui.DescendantRemoving:Connect(function(Ins)
-        if not Ins:IsA("ScrollingFrame") then return end
+        if not Ins:IsA("GuiButton") then return end
         self.SurfaceGuiProblems[SurfaceGui][Ins] = nil
         self:UpdateState()
     end))
 
     --Connect the existing instances.
     for _,Ins in pairs(SurfaceGui:GetDescendants()) do
-        if Ins:IsA("ScrollingFrame") then
+        if Ins:IsA("GuiButton") then
             self.SurfaceGuiProblems[SurfaceGui][Ins] = true
             self:UpdateState()
         end
     end
+
+    --Occasionally update the ClickDetectors.
+    coroutine.wrap(function()
+       while true do
+           self:UpdateState()
+           wait(0.25)
+       end
+   end)()
 end
 
 --[[
 Updates the state.
 --]]
-function SurfaceGuiScrollingFrameTest:UpdateState()
+function UnwrappedSurfaceGuiButtonsTest:UpdateState()
     --Determine the problematic SurfaceGuis.
     local SurfaceGuis = {}
+    local NexusVRCore = self:GetNexusVRCore()
+    local NexusWrappedInstance = NexusVRCore and NexusVRCore:GetResource("NexusWrappedInstance")
     for SurfaceGui,FrameProblemsMap in pairs(self.SurfaceGuiProblems) do
-        for _,_ in pairs(FrameProblemsMap) do
-            table.insert(SurfaceGuis,SurfaceGui)
-            break
+        for Frame,_ in pairs(FrameProblemsMap) do
+            if (not NexusWrappedInstance or not NexusWrappedInstance.CachedInstances[Frame]) then
+                table.insert(SurfaceGuis,SurfaceGui)
+                break
+            end
         end
     end
 
@@ -117,4 +129,4 @@ end
 
 
 
-return SurfaceGuiScrollingFrameTest
+return UnwrappedSurfaceGuiButtonsTest

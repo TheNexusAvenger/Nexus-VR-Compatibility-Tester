@@ -31,7 +31,6 @@ function SurfaceGuiCrashTest:__new()
     self.SolutionText = "There are 3 workarounds:\n1. Move the SurfaceGui under PlayerGui.\n2. Make the GuiObjects unselectable (set Selectable to false).\n3. Use Nexus VR Core with the SurfaceGui."
     self.SurfaceGuiEvents = {}
     self.SurfaceGuiProblems = {}
-    self.Adorns = {}
     self.Highlights = ProblemHighlights.new(self)
 
     --Connect SurfaceGuis in Workspace.
