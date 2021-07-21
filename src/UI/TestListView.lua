@@ -152,11 +152,13 @@ function TestListView:__new()
         if self.CurrentInfoTest.InfoView == "PROBLEM" then
             self.CurrentInfoTest.InfoView = "SOLUTION"
             self.InfoMainText.Text = self.CurrentInfoTest.SolutionText
+            self.InfoHeaderText.Text = "How do I solve this?"
             self.ToggleInfoViewButton.Text = "<"
         elseif self.CurrentInfoTest.InfoView == "SOLUTION" then
             self.CurrentInfoTest.InfoView = "PROBLEM"
             self.InfoMainText.Text = self.CurrentInfoTest.ProblemText
             self.ToggleInfoViewButton.Text = ">"
+            self.InfoHeaderText.Text = "Why is this a problem?"
         end
         DB = true
     end)
