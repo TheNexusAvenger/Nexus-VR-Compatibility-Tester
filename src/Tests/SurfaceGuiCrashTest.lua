@@ -8,9 +8,9 @@ https://github.com/Elttob/roblox-vr-tracker/issues/2
 --]]
 
 local Workspace = game:GetService("Workspace")
-local RunService = game:GetService("RunService")
 
 local BaseTest = require(script.Parent:WaitForChild("BaseTest"))
+local ProblemHighlights = require(script.Parent:WaitForChild("Common"):WaitForChild("ProblemHighlights"))
 
 local SurfaceGuiCrashTest = BaseTest:Extend()
 SurfaceGuiCrashTest:SetClassName("SurfaceGuiCrashTest")
@@ -32,6 +32,7 @@ function SurfaceGuiCrashTest:__new()
     self.SurfaceGuiEvents = {}
     self.SurfaceGuiProblems = {}
     self.Adorns = {}
+    self.Highlights = ProblemHighlights.new(self)
 
     --Connect SurfaceGuis in Workspace.
     Workspace.DescendantRemoving:Connect(function(Ins)
@@ -50,16 +51,6 @@ function SurfaceGuiCrashTest:__new()
     for _,Ins in pairs(Workspace:GetDescendants()) do
         self:ConnectSurfaceGui(Ins)
     end
-
-    --Connect updating the adorn transparencies.
-    RunService.RenderStepped:Connect(function()
-        for _,Adorn in pairs(self.Adorns) do
-            if Adorn.Adornee then
-                Adorn.Size = Adorn.Adornee.Size
-                Adorn.Transparency = (self.InfoView == "NONE" and 1 or (math.sin((tick() * 2) % (math.pi * 2)) * 0.5) + 0.5)
-            end
-        end
-    end)
 end
 
 --[[
@@ -141,19 +132,7 @@ function SurfaceGuiCrashTest:UpdateState()
             table.insert(AdornParts,Adornee)
         end
     end
-
-    --Create the adorn boxes.
-    for _ = #self.Adorns + 1,#AdornParts do
-        local BoxAdorn = Instance.new("BoxHandleAdornment")
-        BoxAdorn.ZIndex = 0
-        BoxAdorn.AlwaysOnTop = true
-        BoxAdorn.Color3 = Color3.new(1,0,0)
-        BoxAdorn.Parent = script
-        table.insert(self.Adorns,BoxAdorn)
-    end
-    for i,Part in pairs(AdornParts) do
-        self.Adorns[i].Adornee = Part
-    end
+    self.Highlights.Objects = AdornParts
 end
 
 
