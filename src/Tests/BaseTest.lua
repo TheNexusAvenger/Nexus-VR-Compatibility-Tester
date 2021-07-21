@@ -20,6 +20,9 @@ function BaseTest:__new()
     self.Name = "UNDEFINED"
     self.Icon = "UNKNOWN"
     self.Status = "Manual"
+    self.ProblemText = ""
+    self.SolutionText = ""
+    self.InfoView = "NONE"
 end
 
 --[[

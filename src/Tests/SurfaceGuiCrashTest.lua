@@ -26,6 +26,8 @@ function SurfaceGuiCrashTest:__new()
     self.Name = "SurfaceGui Crashing"
     self.Icon = "NONE"
     self.Status = "Not Detected"
+    self.ProblemText = "SurfaceGuis under Workspace with Selectable GuiObjects cause VR players to crash when looked at."
+    self.SolutionText = "There are 3 workarounds:\n1. Move the SurfaceGui under PlayerGui.\n2. Make the GuiObjects unselectable (set Selectable to false).\n3. Use Nexus VR Core with the SurfaceGui."
     self.SurfaceGuiEvents = {}
     self.SurfaceGuiProblems = {}
 
