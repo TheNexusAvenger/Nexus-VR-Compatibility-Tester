@@ -63,7 +63,7 @@ function SurfaceGuiCrashTest:ConnectSurfaceGui(SurfaceGui)
     self.SurfaceGuiEvents[SurfaceGui] = {}
     self.SurfaceGuiProblems[SurfaceGui] = {}
     table.insert(self.SurfaceGuiEvents[SurfaceGui],SurfaceGui.DescendantAdded:Connect(function(Ins)
-        if not Ins:IsA("GuiObject") then return end
+        if not Ins:IsA("GuiObject") or not self.SurfaceGuiProblems[SurfaceGui] then return end
         if Ins.Selectable then
             self.SurfaceGuiProblems[SurfaceGui][Ins] = true
             self:UpdateState()
@@ -77,7 +77,7 @@ function SurfaceGuiCrashTest:ConnectSurfaceGui(SurfaceGui)
         end
     end))
     table.insert(self.SurfaceGuiEvents[SurfaceGui],SurfaceGui.DescendantRemoving:Connect(function(Ins)
-        if not Ins:IsA("GuiObject") then return end
+        if not Ins:IsA("GuiObject") or not self.SurfaceGuiProblems[SurfaceGui] then return end
         self.SurfaceGuiProblems[SurfaceGui][Ins] = nil
         self:UpdateState()
     end))
