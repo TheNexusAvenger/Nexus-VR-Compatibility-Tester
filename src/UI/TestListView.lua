@@ -8,6 +8,7 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 
 local NexusInstance = require(script.Parent.Parent:WaitForChild("NexusInstance"):WaitForChild("NexusInstance"))
+local CloseButtonView = require(script.Parent:WaitForChild("CloseButtonView"))
 local TestView = require(script.Parent:WaitForChild("TestView"))
 local Tests = script.Parent.Parent:WaitForChild("Tests")
 local ManualTests = Tests:WaitForChild("Manual")
@@ -212,6 +213,15 @@ function TestListView:__new()
             DB = true
         end)
     end
+
+    --Add the close button.
+    local CloseButton = CloseButtonView.new(ScrollingFrame)
+    CloseButton.CloseButton.MouseButton1Down:Connect(function()
+        if not DB then return end
+        DB = false
+        self.Visible = false
+        DB = true
+    end)
 
     --Connect showing and hidding.
     self:GetPropertyChangedSignal("Visible"):Connect(function()
