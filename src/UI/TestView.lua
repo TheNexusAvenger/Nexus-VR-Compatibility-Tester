@@ -7,8 +7,8 @@ Displays the results of a test.
 local VIEW_ASPECT_RATIO = 8
 local ICON_TO_POSITION = {
     NONE = Vector2.new(512,0),
-    INFO = Vector2.new(512,0),
-    WARNING = Vector2.new(0,512),
+    INFO = Vector2.new(0,512),
+    WARNING = Vector2.new(512,512),
     ERROR = Vector2.new(512,512),
 }
 local ICON_TO_COLOR = {
