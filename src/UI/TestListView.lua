@@ -197,7 +197,7 @@ end
 function TestListView:ShowTestInfo(Test)
     --Hide the current test.
     if self.CurrentInfoTest then
-        self.CurrentInfoTest.Icon = "NONE"
+        self.CurrentInfoTest.InfoView = "NONE"
     end
     self.CurrentInfoTest = Test
     if not Test then
