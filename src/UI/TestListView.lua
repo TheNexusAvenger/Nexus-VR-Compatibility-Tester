@@ -9,6 +9,8 @@ local Players = game:GetService("Players")
 local NexusInstance = require(script.Parent.Parent:WaitForChild("NexusInstance"):WaitForChild("NexusInstance"))
 local TestView = require(script.Parent:WaitForChild("TestView"))
 local Tests = script.Parent.Parent:WaitForChild("Tests")
+local ManualTests = Tests:WaitForChild("Manual")
+local BaseTest = require(Tests:WaitForChild("BaseTest"))
 
 local TestListView = NexusInstance:Extend()
 TestListView:SetClassName("TestListView")
@@ -174,6 +176,21 @@ function TestListView:__new()
     for _,TestModule in pairs(Tests:GetChildren()) do
         if TestModule:IsA("ModuleScript") and TestModule.Name ~= "BaseTest" then
             table.insert(TestInstances,require(TestModule).new())
+        end
+    end
+    for _,TestModule in pairs(ManualTests:GetChildren()) do
+        if TestModule:IsA("ModuleScript") then
+            local TestData = require(TestModule)
+            local Test = BaseTest.new()
+            Test.Name = TestData.Name
+            Test.ProblemText = TestData.ProblemText
+            Test.SolutionText = TestData.SolutionText
+            if TestData.OnInfoViewChanged then
+                Test:GetPropertyChangedSignal("InfoView"):Connect(function()
+                    TestData.OnInfoViewChanged(Test,Test.InfoView)
+                end)
+            end
+            table.insert(TestInstances,Test)
         end
     end
     table.sort(TestInstances,function(a,b)

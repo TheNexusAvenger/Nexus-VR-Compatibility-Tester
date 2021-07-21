@@ -1,7 +1,7 @@
 --[[
 TheNexusAvenger
 
-Test for camera tweening.
+Test for camera animations.
 --]]
 
 local Workspace = game:GetService("Workspace")
@@ -20,11 +20,11 @@ function CameraTweensTest:__new()
     self:InitializeSuper()
 
     --Set up the initial state.
-    self.Name = "Camera Tweens"
+    self.Name = "Camera Animations"
     self.Icon = "NONE"
     self.Status = "Not Detected"
-    self.ProblemText = "Camera tweening can cause motion sickness while playing in VR since it moves the player's view without the player moving."
-    self.SolutionText = "Disable camera tweening in VR."
+    self.ProblemText = "Camera animations can cause motion sickness while playing in VR since it moves the player's view without the player moving."
+    self.SolutionText = "Disable camera animations in VR."
 
     --Connect camera changes.
     local Camera = Workspace.CurrentCamera
