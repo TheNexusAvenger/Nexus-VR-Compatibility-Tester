@@ -32,6 +32,10 @@ function ProblemHighlights:__new(Test)
             BoxAdorn.Parent = script
             table.insert(self.Adorns,BoxAdorn)
         end
+        for i = #self.Adorns,#self.Objects + 1,-1 do
+            self.Adorns[i]:Destroy()
+            self.Adorns[i] = nil
+        end
         for i,Part in pairs(self.Objects) do
             self.Adorns[i].Adornee = Part
         end

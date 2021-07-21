@@ -4,6 +4,8 @@ TheNexusAvenger
 Base class for a VR test.
 --]]
 
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
 local NexusInstance = require(script.Parent.Parent:WaitForChild("NexusInstance"):WaitForChild("NexusInstance"))
 
 local BaseTest = NexusInstance:Extend()
@@ -29,7 +31,8 @@ end
 Returns the Nexus VR Core module.
 --]]
 function BaseTest:GetNexusVRCore()
-    --TODO: Implement.
+    local NexusVRCore = ReplicatedStorage:FindFirstChild("NexusVRCore")
+    return NexusVRCore and require(NexusVRCore)
 end
 
 
